@@ -1,6 +1,6 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   /* config options here */
     images: {
     remotePatterns: [
@@ -17,16 +17,8 @@ const nextConfig: NextConfig = {
     ],
   },
   output: "standalone",
-  cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+  poweredByHeader: false,
+
 };
 
 export default nextConfig;
