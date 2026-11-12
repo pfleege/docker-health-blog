@@ -1,6 +1,7 @@
 // src/lib/db.ts
 
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
+import { seedPosts } from "./seed-data";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -28,9 +29,38 @@ CREATE TABLE IF NOT EXISTS posts (
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE INDEX IF NOT EXISTS posts_published_at_idx ON posts (published_at DESC);
 `;
+
+async function seed(client: PoolClient): Promise<void> {
+  await client.query("BEGIN");
+  try {
+    for (const post of seedPosts) {
+
+      await client.query(
+        `INSERT INTO posts
+           (id, title, slug, excerpt, content, image_url, author, published_at)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+        [
+          post.id,
+          post.title,
+          post.slug,
+          post.excerpt,
+          post.content,
+          post.image_url,
+          post.author,
+          post.published_at,
+        ],
+      );
+    }
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  }
+}
+
+
 
 async function init(): Promise<void> {
   const client = await pool.connect();
@@ -41,7 +71,9 @@ async function init(): Promise<void> {
       await client.query(SCHEMA);
       const { rows } = await client.query<{ count: number }>("SELECT count(*)::int AS count FROM posts");
       if (rows[0].count === 0) {
-        console.log("[db] Empty database detected.");
+        console.log("[db] Empty database detected, inserting showcase data...");
+        await seed(client);
+
       }
     } finally {
       await client.query("SELECT pg_advisory_unlock(424242)");
