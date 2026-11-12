@@ -54,6 +54,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   return rows[0] ? mapRow(rows[0]) : null;
 }
 
+export async function getPostById(id: string): Promise<Post | null> {
+  await ensureDatabase();
+  const { rows } = await pool.query<PostRow>(`SELECT ${COLUMNS} FROM posts WHERE id = $1`, [id]);
+  return rows[0] ? mapRow(rows[0]) : null;
+}
+
 export function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("fi-GB", { day: "numeric", month: "long", year: "numeric" }).format(date);
 }
