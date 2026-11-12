@@ -42,11 +42,13 @@
 //   );
 // }
 
-import { pool } from "@/lib/db";
+import { ensureDatabase, pool } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const { rows } = await pool.query<{ now: Date }>("SELECT now() AS now");
-  return <p className="p-10 text-accent">Database time: {rows[0].now.toISOString()}</p>;
+export default async function HomePage() {
+  await ensureDatabase();
+  const { rows } = await pool.query<{ count: number }>("SELECT count(*)::int AS count FROM posts");
+  return <p className="p-10 text-accent">Posts in database: {rows[0].count}</p>;
 }
+
