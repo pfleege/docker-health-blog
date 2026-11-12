@@ -1,17 +1,7 @@
-export interface SeedPost {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  image_url: string;
-  author: string;
-  published_at: string;
-}
+import { Post } from "@/types";
 
 
-
-export const seedPosts: SeedPost[] = [
+export const seedPosts: Post[] = [
   {
     id: 1,
     title: 'Title-1',

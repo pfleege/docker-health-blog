@@ -42,13 +42,20 @@
 //   );
 // }
 
-import { ensureDatabase, pool } from "@/lib/db";
+import { getPostBySlug, getPosts } from "@/lib/queries/posts";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  await ensureDatabase();
-  const { rows } = await pool.query<{ count: number }>("SELECT count(*)::int AS count FROM posts");
-  return <p className="p-10 text-accent">Posts in database: {rows[0].count}</p>;
+  const [all] = await Promise.all([
+    getPosts(),
+  ]);
+  const one = all[0] ? await getPostBySlug(all[0].slug) : null;
+
+
+  const result = {
+    all: all.map((p) => p.slug),
+  };
+  return <pre className="p-6 text-xs text-zinc-300">{JSON.stringify(result, null, 2)}</pre>;
 }
 
