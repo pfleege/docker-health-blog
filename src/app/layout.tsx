@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Unica_One, Michroma } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const display = Unica_One({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <main className="mx-auto w-4/5 max-w-[1200px] border-x border-carbon-600 bg-carbon-900 px-4 sm:px-6 md:px-8 py-8 min-h-[calc(100vh-4rem)] shadow-glow">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
