@@ -1,5 +1,5 @@
 import { ensureDatabase, pool } from "../db";
-import { Post } from "@/types";
+import { BlogArticle, Post, TextContentSection } from "@/types";
 
 interface PostRow {
   id: number;
@@ -62,4 +62,26 @@ export async function getPostById(id: string): Promise<Post | null> {
 
 export function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("fi-GB", { day: "numeric", month: "long", year: "numeric" }).format(date);
+}
+
+export async function getBlogArticleByTopic(topic: string): Promise<BlogArticle | null> {
+  await ensureDatabase();
+  // Support 'cardio' as an alias for 'workout'
+  const normalized = topic.toLowerCase() === "cardio" ? "workout" : topic.toLowerCase();
+  const { rows } = await pool.query<{
+    id: number;
+    topic: string;
+    title: string;
+    text_content: TextContentSection[];
+  }>(
+    "SELECT id, topic, title, text_content FROM blog_articles WHERE lower(topic) = lower($1)",
+    [normalized]
+  );
+  if (!rows[0]) return null;
+  return {
+    id: rows[0].id,
+    topic: rows[0].topic,
+    title: rows[0].title,
+    textContent: rows[0].text_content,
+  };
 }

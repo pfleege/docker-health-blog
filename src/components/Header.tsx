@@ -18,19 +18,19 @@ export function Header() {
             Home
           </Link>
           <Link
-            href="/blog"
+            href="/blog?slug=cardio"
             className="rounded-full px-4 py-2 text-zinc-300 transition hover:text-accent-light"
           >
-            Articles
+            Workout
           </Link>
           <Link
-            href="/blog?category=Sleep"
+            href="/blog?slug=sleep"
             className="hidden rounded-full px-4 py-2 text-zinc-300 transition hover:text-accent-light sm:block"
           >
             Sleep
           </Link>
           <Link
-            href="/blog?category=Nutrition"
+            href="/blog?slug=nutrition"
             className="hidden rounded-full px-4 py-2 text-zinc-300 transition hover:text-accent-light sm:block"
           >
             Nutrition
