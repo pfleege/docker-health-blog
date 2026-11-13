@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/Header";
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const sans = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Health Blog",
+  title: "Pulse - Health Blog",
   description:
     "Sharing valueable health tips for a better life.",
 };
@@ -27,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}</body>
     </html>
   );
 }
