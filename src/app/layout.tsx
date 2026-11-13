@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Unica_One, Michroma } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 
-const display = Cormorant_Garamond({
+const display = Unica_One({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--font-unica-one",
 });
-const sans = Jost({
+const sans = Michroma({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-jost",
+  weight: ["400"],
+  variable: "--font-michroma",
 });
 
 export const metadata: Metadata = {
@@ -28,9 +28,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body>
+      <body className="font-sans">
         <Header />
-        {children}</body>
+        {children}
+      </body>
     </html>
   );
 }
