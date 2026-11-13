@@ -46,8 +46,8 @@ return (
                   {post.excerpt}
                 </p>
               </div>
-<button className="self-start mt-2 px-4 py-2 bg-orange hover:bg-orange-hover text-black font-semibold text-sm rounded-md transition-colors">
-                Read Article &rarr;
+              <button className="self-start mt-2 px-4 py-2 hover:bg-carbon-600 text-accent font-semibold text-sm rounded-md transition-colors">
+                <a href={`/blog/${post.id}`}>Read Article &rarr;</a>                
               </button>
             </div>
           </article>
