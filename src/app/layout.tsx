@@ -30,7 +30,9 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
       <body className="font-sans">
         <Header />
-        {children}
+        <main className="mx-auto w-4/5 max-w-[1200px] border-x border-carbon-600 bg-carbon-900 px-4 sm:px-6 md:px-8 py-8 min-h-[calc(100vh-4rem)] shadow-glow">
+          {children}
+        </main>
       </body>
     </html>
   );
