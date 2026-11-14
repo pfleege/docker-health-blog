@@ -67,7 +67,7 @@ export default async function BlogPage({
           <div className="pt-6 border-t border-carbon-600">
             <Link
               href="/"
-              className="inline-flex items-center px-4 py-2 bg-orange hover:bg-orange-hover text-black font-semibold text-sm rounded-md transition-colors"
+              className="inline-flex items-center px-4 py-2 text-accent font-semibold text-sm rounded-md transition-colors"
             >
               &larr; Back to Main
             </Link>

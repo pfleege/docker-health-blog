@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Pulse – Health Blog Showcase
 
-## Getting Started
+![](./public/docker-health-blog.png)
 
-First, run the development server:
+A showcase health blog built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS** and **PostgreSQL**,
+packaged for **Docker**. Dark carbon-fiber theme with orange highlights.
+
+## Quick start (Docker)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+On first request the app creates the database schema and inserts showcase data
+(3 articles with cover images). Data persists in the `pgdata` Docker volume.
+To start fresh: `docker compose down -v`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Optional: copy `.env.example` to `.env` to change the database credentials
+(the defaults are for local development only).
 
-## Learn More
+## Local development
 
-To learn more about Next.js, take a look at the following resources:
+Run only the database in Docker, and Next.js on your machine:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+docker compose up -d db
+cp .env.example .env.local
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How it works
 
-## Deploy on Vercel
+| Concern              | Where                                                                       |
+| -------------------- | --------------------------------------------------------------------------- |
+| Schema + seeding     | `src/lib/db.ts` (runs once, guarded by a Postgres advisory lock)            |
+| Showcase articles    | `src/lib/seed-data.ts`                                                      |
+| Queries              | `src/lib/queries/posts.ts`                                                  |
+| Pages                | `src/app/page.tsx`, `src/app/blog/page.tsx`, `src/app/blog/[slug]/page.tsx` |
+| Theme (carbon fiber) | `src/app/globals.css`, `tailwind.config.ts`                                 |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Adding your own posts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Insert an image and a post directly in PostgreSQL, for example:
+
+```sql
+INSERT INTO posts (id, title, slug, excerpt, content, image_url, author, published_at)
+VALUES ('4', 'My post', 'my-slug', 'My excerpt', 'My content', 'https://my-url', 'Author name', 'Date');
+```
+
+## Notes
+
+- Content is sample text for demonstration and is not medical advice.
+- Pages are rendered dynamically, so the build does not need a database connection.
