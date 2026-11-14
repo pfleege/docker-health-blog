@@ -54,3 +54,4 @@ VALUES ('4', 'My post', 'my-slug', 'My excerpt', 'My content', 'https://my-url',
 
 - Content is sample text for demonstration and is not medical advice.
 - Pages are rendered dynamically, so the build does not need a database connection.
+- NOTE! 'docker compose build' gives errors on virtual machines (VirtualBox) so use it on non-virtual systems (Linux, iOS, Windows)
